@@ -1,69 +1,348 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Federality</title>
-    <link rel="stylesheet" href="static/css/index.css">
-    <link rel="shourtcut icon" href="static/img/icon.png">
-    <script src="https://kit.fontawesome.com/25ee453084.js" crossorigin="anonymous"></script>
+<html><head><base href="https://advantage.lol" />
+<title>Federality - Gorilla Tag's Best Mod Menu</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    overflow: hidden;
+  }
+  .top-panel {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  .logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ff3366;
+    margin-right: 1.5rem;
+  }
+  .nav-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  .button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .home-button {
+    background-color: transparent;
+    color: #ffffff;
+  }
+  .download-button {
+    background-color: #7289da;
+    color: white;
+  }
+  .discord-button {
+    background-color: #5865F2;
+    color: white;
+  }
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  h1 {
+    font-size: 8vw;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(45deg, #ff3366, #ff6b6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pulse 4s ease-in-out infinite alternate;
+    z-index: 2;
+  }
+  .subtitle {
+    font-size: 4vw;
+    font-weight: 700;
+    margin: 10px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  .subtitle.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  @keyframes popIn {
+    0% {
+      transform: scale(0.8) translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes pulse {
+    0% {
+      text-shadow: 0 0 20px rgba(255, 51, 102, 0.7), 0 0 40px rgba(255, 51, 102, 0.5);
+    }
+    100% {
+      text-shadow: 0 0 40px rgba(255, 51, 102, 0.7), 0 0 70px rgba(255, 51, 102, 0.5);
+    }
+  }
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    z-index: 2;
+    cursor: pointer;
+  }
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0) translateX(-50%);
+    }
+    40% {
+      transform: translateY(-30px) translateX(-50%);
+    }
+    60% {
+      transform: translateY(-15px) translateX(-50%);
+    }
+  }
+  .animation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300%;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .particle {
+    position: absolute;
+    background-color: #ff3366;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: float 15s infinite;
+  }
+  @keyframes float {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-100px) translateX(100px) rotate(180deg);
+    }
+    100% {
+      transform: translateY(0) translateX(0) rotate(360deg);
+    }
+  }
+  #pageContainer {
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .video-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
 </head>
 <body>
-<div class="bar">
-    <img class="icooss" src="static/img/icon.png">
+  <div class="top-panel">
+    <div class="logo">
+      <svg class="icon" viewBox="0 0 24 24" fill="#ff3366">
+        <path d="M12 2L1 21h22L12 2zm0 3.516L20.297 19H3.703L12 5.516z"/>
+      </svg>
+    </div>
+    <div class="nav-buttons">
+      <a href="#" class="button home-button">
+        <svg class="icon" viewBox="0 0 24 24" fill="#ffffff">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        HOME
+      </a>
+      <a href="#" class="button download-button">
+        <svg class="icon" viewBox="0 0 24 24" fill="#ffffff">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+        DOWNLOAD
+      </a>
+      <a href="https:discord.gg/ExSBz9vVm3" class="button discord-button">
+        <svg class="icon" viewBox="0 0 24 24" fill="#ffffff">
+          <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+        </svg>
+        DISCORD
+      </a>
+    </div>
+  </div>
 
-    <nav class="list">
-        <a class="l1 ha" href="index.html"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; HOME</a>
-        <a class="l2 ha" href="https://github.com/Merzttt/Federality/raw/main/FederalityBootstrapper.rar"><i class="fa-solid fa-download"></i>&nbsp;&nbsp; DOWNLOAD</a>
-        <a class="l4 ha" href="https://discord.gg/Y8YWBYDUxD"><i class="fa-brands fa-discord"></i>&nbsp;&nbsp; DISCORD</a>
-    </nav>
-</div>
+  <div class="animation-container" id="animationContainer"></div>
 
-<div class="esex">
+  <div id="pageContainer">
+    <section class="page" id="page1">
+      <h1>Federality</h1>
+      <p class="subtitle" id="subtitle1">Snappy</p>
+      <p class="subtitle" id="subtitle2">Clean</p>
+      <p class="subtitle" id="subtitle3">Innovative</p>
+      <div class="scroll-indicator" onclick="scrollToNextPage()">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14"></path>
+          <path d="M19 12l-7 7-7-7"></path>
+        </svg>
+      </div>
+    </section>
+    
+    <section class="page" id="page2">
+      <div class="video-container">
+        <iframe src="https:www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </section>
+  </div>
 
-    <h1 class="title"><a class="skid">FEDERALITY</a> FOR WINDOWS</h1>
-    <p class="desc">Experience Federality, the best scripting tool on the big screen and harness the unparalleled power it offers.<br>Dive into the evolution, not just as an observer, but as a participant riding the crest of innovation.<br>With advanced scripting capabilities and superior performance.</p>
+  <script>
+    let currentPage = 0;
+    const totalPages = 2;
+    const pageContainer = document.getElementById('pageContainer');
+    const animationContainer = document.getElementById('animationContainer');
 
-    <a class="download" href="https://github.com/Merzttt/Federality/raw/main/FederalityBootstrapper.rar">Download for Windows &nbsp;&nbsp;<i class="fa-brands fa-windows" style="color: black;"></i></a>
-    <a class="discord" href="https://discord.gg/Y8YWBYDUxD">Discord &nbsp;&nbsp;<i class="fa-brands fa-discord"></i></a>
+    function scrollToNextPage() {
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        updatePagePosition();
+      }
+    }
 
-    <img class="preview" src="static/img/executor.png">
+    function scrollToPreviousPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        updatePagePosition();
+      }
+    }
 
+    function updatePagePosition() {
+      pageContainer.style.transform = `translateY(-${currentPage * 100}vh)`;
+      animationContainer.style.transform = `translateY(-${currentPage * 33.33}%)`;
+      updateScrollIndicator();
+    }
 
-    <!--Area 2-->
+    function updateScrollIndicator() {
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      if (currentPage === totalPages - 1) {
+        scrollIndicator.style.display = 'none';
+      } else {
+        scrollIndicator.style.display = 'block';
+      }
+    }
 
-    <nav class="de1">
-        <h2 class="de_name"><i class="fa-solid fa-scroll grdi"></i>&nbsp;&nbsp; Unrivaled Execution.</h2>
-        <p class="de_desc">Federality boasts exceptional support for a wide array of essential libraries and scripts, ensuring smooth development and gameplay. Focus on what matters most - having a great time!</p>
-    </nav>
+    // particle animation
+    const particleCount = 200;
 
-    <nav class="de2">
-        <h2 class="de_name"><i class="fa-solid fa-code grdi"></i>&nbsp;&nbsp; Byfron Bypass.</h2>
-        <p class="de_desc">We completely bypass Roblox's anti-cheat to prevent users from getting banned.</p>
-    </nav>
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      const size = Math.random() * 15 + 5;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 300}%`;
+      
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+      particle.style.animationDuration = `${15 + Math.random() * 10}s`;
 
-    <nav class="de3">
-        <h2 class="de_name"><i class="fa-solid fa-hammer grdi"></i>&nbsp;&nbsp; Continuous Updates.</h2>
-        <p class="de_desc">We provide continuous updates to ensure you are completely undetectable and maintain optimal performance.</p>
-    </nav>
+      animationContainer.appendChild(particle);
+    }
 
-    <video class="showcase" src="static/vid/preview.mp4" muted autoplay loop></video>
+    // subtitle animation
+    const subtitles = document.querySelectorAll('.subtitle');
+    let currentSubtitle = 0;
 
-    <svg class="grr1" width="400" height="510" >
-        <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#7c438f;stop-opacity:1" />
-              <stop offset="42%" style="stop-color:#85469c;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#91478b;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-        <path class="gr1" d="M12 80 L15 300 L555 100 Z" />
-    </svg>
+    function showNextSubtitle() {
+      if (currentSubtitle < subtitles.length) {
+        subtitles[currentSubtitle].classList.add('visible');
+        currentSubtitle++;
+        setTimeout(showNextSubtitle, 1000);
+      }
+    }
 
-</div>
+    window.addEventListener('load', () => {
+      setTimeout(showNextSubtitle, 1000);
+    });
 
-<p class="copy">© 2024. Federality Co. all rights reserved.</p>
+    // smooth scrolling
+    window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        scrollToNextPage();
+      } else {
+        scrollToPreviousPage();
+      }
+    }, { passive: false });
 
-<img class="bg" src="static/img/bg.jpg">
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.changedTouches[0].screenY;
+    }, false);
+
+    window.addEventListener('touchend', (e) => {
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+      if (touchStartY > touchEndY) {
+        scrollToNextPage();
+      } else {
+        scrollToPreviousPage();
+      }
+    }
+
+    updateScrollIndicator();
+  </script>
 </body>
 </html>
